@@ -1,4 +1,4 @@
-open Core_kernel
+open Core
 open Arrow_c_api
 
 let%expect_test _ =
@@ -220,7 +220,7 @@ let t3_array_to_table =
 let%expect_test _ =
   let t1 = { foo = 1337; bar = "fortytwo"; foobar = Some 0.57721566490153286 } in
   let t2 = { foo = 42; bar = "leet"; foobar = None } in
-  let time = Time_ns.of_string "2020-01-16 15:15:00.000Z" in
+  let time = Time_ns.of_string_with_utc_offset "2020-01-16 15:15:00.000Z" in
   t3_array_to_table
     [| { t = t1; time; target = None; features = [| 1.; 2.; 3. |] }
      ; { t = t2; time; target = Some 3.14; features = [| 1.23; 2.34; 3.45 |] }
@@ -479,7 +479,7 @@ let t5_array_to_table =
 let%expect_test _ =
   let t1 = { foo = 1337; bar = "fortytwo"; foobar = Some 0.57721566490153286 } in
   let t2 = { foo = 42; bar = "leet"; foobar = None } in
-  let time = Time_ns.of_string "2020-01-16 15:15:00.000Z" in
+  let time = Time_ns.of_string_with_utc_offset "2020-01-16 15:15:00.000Z" in
   let c t b s od =
     let span = Time_ns.Span.of_string s in
     let ofday = Time_ns.Ofday.of_string od in

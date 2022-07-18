@@ -24,8 +24,8 @@ module Reader : sig
   val f64 : ('a, 'b, 'c, float) col
   val str : ('a, 'b, 'c, string) col
   val stringable : (module Stringable.S with type t = 'd) -> ('a, 'b, 'c, 'd) col
-  val date : ('a, 'b, 'c, Core_kernel.Date.t) col
-  val time_ns : ('a, 'b, 'c, Core_kernel.Time_ns.t) col
+  val date : ('a, 'b, 'c, Core.Date.t) col
+  val time_ns : ('a, 'b, 'c, Core.Time_ns.t) col
   val bool : ('a, 'b, 'c, bool) col
   val i64_opt : ('a, 'b, 'c, int option) col
   val f64_opt : ('a, 'b, 'c, float option) col
@@ -36,8 +36,8 @@ module Reader : sig
     :  (module Stringable.S with type t = 'd)
     -> ('a, 'b, 'c, 'd option) col
 
-  val date_opt : ('a, 'b, 'c, Core_kernel.Date.t option) col
-  val time_ns_opt : ('a, 'b, 'c, Core_kernel.Time_ns.t option) col
+  val date_opt : ('a, 'b, 'c, Core.Date.t option) col
+  val time_ns_opt : ('a, 'b, 'c, Core.Time_ns.t option) col
   val map : ('a, 'b, 'c, 'x) col -> f:('x -> 'y) -> ('a, 'b, 'c, 'y) col
   val read : 'v col_ -> string -> 'v list
 end
@@ -57,13 +57,13 @@ module Writer : sig
     -> ('c, 'a, 'd) Field.t_with_perm
     -> 'a state
 
-  val date : ('a, 'b, Core_kernel.Date.t) col
-  val time_ns : ('a, 'b, Core_kernel.Time_ns.t) col
+  val date : ('a, 'b, Core.Date.t) col
+  val time_ns : ('a, 'b, Core.Time_ns.t) col
   val i64_opt : ('a, 'b, int option) col
   val f64_opt : ('a, 'b, float option) col
   val str_opt : ('a, 'b, string option) col
-  val date_opt : ('a, 'b, Core_kernel.Date.t option) col
-  val time_ns_opt : ('a, 'b, Core_kernel.Time_ns.t option) col
+  val date_opt : ('a, 'b, Core.Date.t option) col
+  val time_ns_opt : ('a, 'b, Core.Time_ns.t option) col
   val bool_opt : ('a, 'b, bool option) col
 
   val write
@@ -88,13 +88,13 @@ val str : ('a, 'b, string) col
 val bool : ('a, 'b, bool) col
 val bool_opt : ('a, 'b, bool option) col
 val stringable : (module Stringable.S with type t = 'd) -> ('a, 'b, 'd) col
-val date : ('a, 'b, Core_kernel.Date.t) col
-val time_ns : ('a, 'b, Core_kernel.Time_ns.t) col
+val date : ('a, 'b, Core.Date.t) col
+val time_ns : ('a, 'b, Core.Time_ns.t) col
 val i64_opt : ('a, 'b, int option) col
 val f64_opt : ('a, 'b, float option) col
 val str_opt : ('a, 'b, string option) col
-val date_opt : ('a, 'b, Core_kernel.Date.t option) col
-val time_ns_opt : ('a, 'b, Core_kernel.Time_ns.t option) col
+val date_opt : ('a, 'b, Core.Date.t option) col
+val time_ns_opt : ('a, 'b, Core.Time_ns.t option) col
 
 val read_write_fn
   :  ('a t -> (Wrapper.Table.t * int -> 'a) * 'a t)

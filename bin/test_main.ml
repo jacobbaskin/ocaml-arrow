@@ -1,9 +1,9 @@
 open Base
 open Arrow_c_api
 
-type time = Core_kernel.Time_ns.t
+type time = Core.Time_ns.t
 
-let sexp_of_time time = Core_kernel.Time_ns.to_string time |> sexp_of_string
+let sexp_of_time time = Core.Time_ns.to_string_utc time |> sexp_of_string
 
 module Foobar = struct
   type t =
@@ -20,7 +20,7 @@ type t =
   { x : int
   ; y : float
   ; z : string
-  ; truc : Core_kernel.Date.t
+  ; truc : Core.Date.t
   ; time : time
   ; y_opt : float option
   ; foobar : Foobar.t
@@ -40,10 +40,10 @@ let `read read, `write write =
        ~foobar:(stringable (module Foobar)))
 
 let () =
-  let base_time = Core_kernel.Time_ns.now () in
-  let base_date = Core_kernel.Date.of_string "2020-01-16" in
-  let date = Core_kernel.Date.add_days base_date in
-  let time s = Core_kernel.Time_ns.(add base_time (Span.of_sec s)) in
+  let base_time = Core.Time_ns.now () in
+  let base_date = Core.Date.of_string "2020-01-16" in
+  let date = Core.Date.add_days base_date in
+  let time s = Core.Time_ns.(add base_time (Span.of_sec s)) in
   let ts =
     [ { x = 42
       ; y = 3.14159265358979

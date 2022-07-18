@@ -1,4 +1,4 @@
-open Core_kernel
+open Core
 module A = Arrow_c_api
 
 let debug = false

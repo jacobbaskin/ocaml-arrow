@@ -44,9 +44,9 @@ let%expect_test _ =
     ((0)(1)(1.4142135623730951)(1.7320508075688772)(2)(0)(1)(1.4142135623730951)(1.7320508075688772)(2)(0)(1)(1.4142135623730951)(1.7320508075688772)(2)) |}]
 
 let create_t2 index t s o =
-  let t = Core_kernel.Time_ns.of_string t in
-  let s = Core_kernel.Time_ns.Span.of_string s in
-  let o = Core_kernel.Time_ns.Ofday.of_string o in
+  let t = Core.Time_ns.of_string_with_utc_offset t in
+  let s = Core.Time_ns.Span.of_string s in
+  let o = Core.Time_ns.Ofday.of_string o in
   { Ppx_t.x = (index * 2) + 1
   ; t
   ; t_opt = (if index % 2 = 0 then Some t else None)

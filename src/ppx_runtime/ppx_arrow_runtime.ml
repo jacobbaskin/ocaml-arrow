@@ -140,19 +140,19 @@ module String_option_col : Col_intf with type elem = string option = struct
   let set t idx v = t.(idx) <- v
 end
 
-module Date_col : Col_intf with type elem = Core_kernel.Date.t = struct
-  type elem = Core_kernel.Date.t
+module Date_col : Col_intf with type elem = Core.Date.t = struct
+  type elem = Core.Date.t
   type t = elem array
 
-  let init len = Array.create ~len Core_kernel.Date.unix_epoch
+  let init len = Array.create ~len Core.Date.unix_epoch
   let of_table table name = C.read_date table ~column:(`Name name)
   let writer_col t name = W.date t ~name
   let get t idx = t.(idx)
   let set t idx v = t.(idx) <- v
 end
 
-module Date_option_col : Col_intf with type elem = Core_kernel.Date.t option = struct
-  type elem = Core_kernel.Date.t option
+module Date_option_col : Col_intf with type elem = Core.Date.t option = struct
+  type elem = Core.Date.t option
   type t = elem array
 
   let init len = Array.create ~len None
@@ -162,20 +162,20 @@ module Date_option_col : Col_intf with type elem = Core_kernel.Date.t option = s
   let set t idx v = t.(idx) <- v
 end
 
-module Time_ns_col : Col_intf with type elem = Core_kernel.Time_ns.t = struct
-  type elem = Core_kernel.Time_ns.t
+module Time_ns_col : Col_intf with type elem = Core.Time_ns.t = struct
+  type elem = Core.Time_ns.t
   type t = elem array
 
-  let init len = Array.create ~len Core_kernel.Time_ns.epoch
+  let init len = Array.create ~len Core.Time_ns.epoch
   let of_table table name = C.read_time_ns table ~column:(`Name name)
   let writer_col t name = W.time_ns t ~name
   let get t idx = t.(idx)
   let set t idx v = t.(idx) <- v
 end
 
-module Time_ns_option_col : Col_intf with type elem = Core_kernel.Time_ns.t option =
+module Time_ns_option_col : Col_intf with type elem = Core.Time_ns.t option =
 struct
-  type elem = Core_kernel.Time_ns.t option
+  type elem = Core.Time_ns.t option
   type t = elem array
 
   let init len = Array.create ~len None
@@ -185,20 +185,20 @@ struct
   let set t idx v = t.(idx) <- v
 end
 
-module Span_col : Col_intf with type elem = Core_kernel.Time_ns.Span.t = struct
-  type elem = Core_kernel.Time_ns.Span.t
+module Span_col : Col_intf with type elem = Core.Time_ns.Span.t = struct
+  type elem = Core.Time_ns.Span.t
   type t = elem array
 
-  let init len = Array.create ~len Core_kernel.Time_ns.Span.zero
+  let init len = Array.create ~len Core.Time_ns.Span.zero
   let of_table table name = C.read_span_ns table ~column:(`Name name)
   let writer_col t name = W.span_ns t ~name
   let get t idx = t.(idx)
   let set t idx v = t.(idx) <- v
 end
 
-module Span_option_col : Col_intf with type elem = Core_kernel.Time_ns.Span.t option =
+module Span_option_col : Col_intf with type elem = Core.Time_ns.Span.t option =
 struct
-  type elem = Core_kernel.Time_ns.Span.t option
+  type elem = Core.Time_ns.Span.t option
   type t = elem array
 
   let init len = Array.create ~len None
@@ -208,20 +208,20 @@ struct
   let set t idx v = t.(idx) <- v
 end
 
-module Ofday_col : Col_intf with type elem = Core_kernel.Time_ns.Ofday.t = struct
-  type elem = Core_kernel.Time_ns.Ofday.t
+module Ofday_col : Col_intf with type elem = Core.Time_ns.Ofday.t = struct
+  type elem = Core.Time_ns.Ofday.t
   type t = elem array
 
-  let init len = Array.create ~len Core_kernel.Time_ns.Ofday.start_of_day
+  let init len = Array.create ~len Core.Time_ns.Ofday.start_of_day
   let of_table table name = C.read_ofday_ns table ~column:(`Name name)
   let writer_col t name = W.ofday_ns t ~name
   let get t idx = t.(idx)
   let set t idx v = t.(idx) <- v
 end
 
-module Ofday_option_col : Col_intf with type elem = Core_kernel.Time_ns.Ofday.t option =
+module Ofday_option_col : Col_intf with type elem = Core.Time_ns.Ofday.t option =
 struct
-  type elem = Core_kernel.Time_ns.Ofday.t option
+  type elem = Core.Time_ns.Ofday.t option
   type t = elem array
 
   let init len = Array.create ~len None

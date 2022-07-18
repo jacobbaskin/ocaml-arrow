@@ -203,7 +203,7 @@ module Writer = struct
     length, col :: acc_col, set
 
   let date (length, acc_col, acc_set) field =
-    let dates = Array.create ~len:length Core_kernel.Date.unix_epoch in
+    let dates = Array.create ~len:length Core.Date.unix_epoch in
     let col () = Writer.date dates ~name:(Field.name field) in
     let set idx t =
       dates.(idx) <- Field.get field t;
@@ -221,7 +221,7 @@ module Writer = struct
     length, col :: acc_col, set
 
   let time_ns (length, acc_col, acc_set) field =
-    let times = Array.create ~len:length Core_kernel.Time_ns.epoch in
+    let times = Array.create ~len:length Core.Time_ns.epoch in
     let col () = Writer.time_ns times ~name:(Field.name field) in
     let set idx t =
       times.(idx) <- Field.get field t;

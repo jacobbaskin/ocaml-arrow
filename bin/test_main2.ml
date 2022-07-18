@@ -1,4 +1,4 @@
-open! Core_kernel
+open! Core
 open! Arrow_c_api
 
 let all_cols = ref []

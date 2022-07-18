@@ -548,7 +548,7 @@ module Column = struct
     let dst = read_ba table ~datatype:Date32 ~kind:Int32 ~ctype:Ctypes.int32_t ~column in
     let num_rows = Bigarray.Array1.dim dst in
     Array.init num_rows ~f:(fun idx ->
-        Core_kernel.Date.(add_days unix_epoch (Int32.to_int_exn dst.{idx})))
+        Core.Date.(add_days unix_epoch (Int32.to_int_exn dst.{idx})))
 
   let read_date_opt table ~column =
     let dst, valid =
@@ -558,7 +558,7 @@ module Column = struct
     Array.init num_rows ~f:(fun idx ->
         if Valid.get valid idx
         then
-          Core_kernel.Date.(add_days unix_epoch (Int32.to_int_exn dst.{idx}))
+          Core.Date.(add_days unix_epoch (Int32.to_int_exn dst.{idx}))
           |> Option.some
         else None)
 
@@ -593,7 +593,7 @@ module Column = struct
     let mult = timestamp_unit_in_ns table ~column in
     let num_rows = Bigarray.Array1.dim dst in
     Array.init num_rows ~f:(fun idx ->
-        Core_kernel.Time_ns.of_int_ns_since_epoch (mult * Int64.to_int_exn dst.{idx}))
+        Core.Time_ns.of_int_ns_since_epoch (mult * Int64.to_int_exn dst.{idx}))
 
   let read_time_ns_opt table ~column =
     let dst, valid =
@@ -604,7 +604,7 @@ module Column = struct
     Array.init num_rows ~f:(fun idx ->
         if Valid.get valid idx
         then
-          Core_kernel.Time_ns.of_int_ns_since_epoch (mult * Int64.to_int_exn dst.{idx})
+          Core.Time_ns.of_int_ns_since_epoch (mult * Int64.to_int_exn dst.{idx})
           |> Option.some
         else None)
 
@@ -613,8 +613,8 @@ module Column = struct
     let mult = time64_unit_in_ns table ~column in
     let num_rows = Bigarray.Array1.dim dst in
     Array.init num_rows ~f:(fun idx ->
-        Core_kernel.Time_ns.Span.of_int_ns (mult * Int64.to_int_exn dst.{idx})
-        |> Core_kernel.Time_ns.Ofday.of_span_since_start_of_day_exn)
+        Core.Time_ns.Span.of_int_ns (mult * Int64.to_int_exn dst.{idx})
+        |> Core.Time_ns.Ofday.of_span_since_start_of_day_exn)
 
   let read_ofday_ns_opt table ~column =
     let dst, valid =
@@ -625,8 +625,8 @@ module Column = struct
     Array.init num_rows ~f:(fun idx ->
         if Valid.get valid idx
         then
-          Core_kernel.Time_ns.Span.of_int_ns (mult * Int64.to_int_exn dst.{idx})
-          |> Core_kernel.Time_ns.Ofday.of_span_since_start_of_day_exn
+          Core.Time_ns.Span.of_int_ns (mult * Int64.to_int_exn dst.{idx})
+          |> Core.Time_ns.Ofday.of_span_since_start_of_day_exn
           |> Option.some
         else None)
 
@@ -637,7 +637,7 @@ module Column = struct
     let mult = duration_unit_in_ns table ~column in
     let num_rows = Bigarray.Array1.dim dst in
     Array.init num_rows ~f:(fun idx ->
-        Core_kernel.Time_ns.Span.of_int_ns (mult * Int64.to_int_exn dst.{idx}))
+        Core.Time_ns.Span.of_int_ns (mult * Int64.to_int_exn dst.{idx}))
 
   let read_span_ns_opt table ~column =
     let dst, valid =
@@ -648,7 +648,7 @@ module Column = struct
     Array.init num_rows ~f:(fun idx ->
         if Valid.get valid idx
         then
-          Core_kernel.Time_ns.Span.of_int_ns (mult * Int64.to_int_exn dst.{idx})
+          Core.Time_ns.Span.of_int_ns (mult * Int64.to_int_exn dst.{idx})
           |> Option.some
         else None)
 
@@ -801,7 +801,7 @@ module Writer = struct
     let release_array _ = if verbose then Stdio.printf "release array\n%!" in
     Release_array_fn_ptr.of_fun release_array
 
-  let () = keep_alive := [Obj.repr release_schema; Obj.repr release_array]
+  let () = keep_alive := [Caml.Obj.repr release_schema; Caml.Obj.repr release_array]
 
   let release_array_ptr = Ctypes.(coerce Release_array_fn_ptr.t (ptr void) release_array)
 
@@ -925,7 +925,7 @@ module Writer = struct
         Ctypes.CArray.set
           array
           idx
-          (Core_kernel.Date.(diff date unix_epoch) |> Int32.of_int_exn));
+          (Core.Date.(diff date unix_epoch) |> Int32.of_int_exn));
     let buffers =
       Ctypes.CArray.of_list
         (Ctypes.ptr Ctypes.void)
@@ -950,7 +950,7 @@ module Writer = struct
     Array.iteri date_array ~f:(fun idx date ->
         let date =
           match date with
-          | Some date -> Core_kernel.Date.(diff date unix_epoch) |> Int32.of_int_exn
+          | Some date -> Core.Date.(diff date unix_epoch) |> Int32.of_int_exn
           | None ->
             Valid.set valid idx false;
             Int32.zero
@@ -988,7 +988,7 @@ module Writer = struct
         Ctypes.CArray.set
           array
           idx
-          (Core_kernel.Time_ns.to_int_ns_since_epoch time |> Int64.of_int_exn));
+          (Core.Time_ns.to_int_ns_since_epoch time |> Int64.of_int_exn));
     let buffers =
       Ctypes.CArray.of_list
         (Ctypes.ptr Ctypes.void)
@@ -1018,7 +1018,7 @@ module Writer = struct
         let time =
           match time with
           | Some time ->
-            Core_kernel.Time_ns.to_int_ns_since_epoch time |> Int64.of_int_exn
+            Core.Time_ns.to_int_ns_since_epoch time |> Int64.of_int_exn
           | None ->
             Valid.set valid idx false;
             Int64.zero
@@ -1056,7 +1056,7 @@ module Writer = struct
         Ctypes.CArray.set
           array
           idx
-          (Core_kernel.Time_ns.Span.to_int_ns span |> Int64.of_int_exn));
+          (Core.Time_ns.Span.to_int_ns span |> Int64.of_int_exn));
     let buffers =
       Ctypes.CArray.of_list
         (Ctypes.ptr Ctypes.void)
@@ -1081,7 +1081,7 @@ module Writer = struct
     Array.iteri span_array ~f:(fun idx span ->
         let span =
           match span with
-          | Some span -> Core_kernel.Time_ns.Span.to_int_ns span |> Int64.of_int_exn
+          | Some span -> Core.Time_ns.Span.to_int_ns span |> Int64.of_int_exn
           | None ->
             Valid.set valid idx false;
             Int64.zero
@@ -1119,8 +1119,8 @@ module Writer = struct
         Ctypes.CArray.set
           array
           idx
-          (Core_kernel.Time_ns.Ofday.to_span_since_start_of_day ofday
-          |> Core_kernel.Time_ns.Span.to_int_ns
+          (Core.Time_ns.Ofday.to_span_since_start_of_day ofday
+          |> Core.Time_ns.Span.to_int_ns
           |> Int64.of_int_exn));
     let buffers =
       Ctypes.CArray.of_list
@@ -1147,8 +1147,8 @@ module Writer = struct
         let ofday =
           match ofday with
           | Some ofday ->
-            Core_kernel.Time_ns.Ofday.to_span_since_start_of_day ofday
-            |> Core_kernel.Time_ns.Span.to_int_ns
+            Core.Time_ns.Ofday.to_span_since_start_of_day ofday
+            |> Core.Time_ns.Span.to_int_ns
             |> Int64.of_int_exn
           | None ->
             Valid.set valid idx false;

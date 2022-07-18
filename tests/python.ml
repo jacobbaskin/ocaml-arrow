@@ -1,4 +1,4 @@
-open Core_kernel
+open Core
 open Arrow_c_api
 
 type t =
@@ -243,7 +243,7 @@ let%expect_test _ =
           ~name:"col_date"
       in
       let col_time =
-        let t = Time_ns.of_string "2021-06-05 09:36:00.123+01:00" in
+        let t = Time_ns.of_string_with_utc_offset "2021-06-05 09:36:00.123+01:00" in
         Writer.time_ns [| t; t; t; t; t |] ~name:"col_time"
       in
       let col_ofday =

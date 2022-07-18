@@ -181,7 +181,7 @@ module Test4 = struct
 end
 
 module Test5 = struct
-  open Core_kernel
+  open Core
 
   module Foo = struct
     type t =
